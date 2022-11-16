@@ -7,6 +7,7 @@ log.basicConfig(
     datefmt="%Y-%m-%dT%H:%M:%SZ",
     level=log.ERROR
 )
+EXTRA_DIFFUSE = True
 def removeDuplicates(array):
     newArr = []
     for i in array:
@@ -17,9 +18,9 @@ def printMat(mat):
 	for m in mat:
 		print(m)
 def readRGB(filename,resize=False):
-    size = 16,16
     img = Image.open(filename)
     if resize:
+        size = 16,16
         img = img.resize(size,Image.Resampling.LANCZOS)
         img= img.convert('RGB')
     numpydata = np.asarray(img)
@@ -42,10 +43,11 @@ def encryptDecryptPixel(encryptResult,i,halfLength,colorKeyMatrix,color,isEncryp
     floc = findLoc(colorKeyMatrix,color[i])
     sloc = findLoc(colorKeyMatrix,color[halfLength+i])
     if isEncryption:
-        floc[0]=(floc[0]+9)%16
-        floc[1]=(floc[1]+9)%16
-        sloc[0]=(sloc[0]+9)%16
-        sloc[1]=(sloc[1]+9)%16
+        if EXTRA_DIFFUSE:
+            floc[0]=(floc[0]+9)%16
+            floc[1]=(floc[1]+9)%16
+            sloc[0]=(sloc[0]+9)%16
+            sloc[1]=(sloc[1]+9)%16
         if floc[0] == sloc[0]:
             encryptResult[i]=colorKeyMatrix[floc[0],(floc[1]+1)%16]
             encryptResult[halfLength+i] = colorKeyMatrix[sloc[0],(sloc[1]+1)%16]
@@ -55,11 +57,12 @@ def encryptDecryptPixel(encryptResult,i,halfLength,colorKeyMatrix,color,isEncryp
         else:
             encryptResult[i]=colorKeyMatrix[floc[0],sloc[1]]
             encryptResult[halfLength+i] = colorKeyMatrix[sloc[0],floc[1]]
-    else:  
-        floc[0]=(floc[0]+7)%16
-        floc[1]=(floc[1]+7)%16
-        sloc[0]=(sloc[0]+7)%16
-        sloc[1]=(sloc[1]+7)%16
+    else:
+        if EXTRA_DIFFUSE:
+            floc[0]=(floc[0]+7)%16
+            floc[1]=(floc[1]+7)%16
+            sloc[0]=(sloc[0]+7)%16
+            sloc[1]=(sloc[1]+7)%16
         if floc[0] == sloc[0]:
             encryptResult[i]=colorKeyMatrix[floc[0],(floc[1]+15)%16]
             encryptResult[halfLength+i] = colorKeyMatrix[sloc[0],(sloc[1]+15)%16]
