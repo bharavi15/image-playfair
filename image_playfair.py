@@ -85,7 +85,6 @@ log.debug('G key matrix:')
 log.debug(GkeyMatrix)
 log.debug('B key matrix:')
 log.debug(BkeyMatrix)
-
 def findLoc(mat,x):
     coordinates = np.where(mat==x)
     return [coordinates[0][0],coordinates[1][0]]
@@ -100,9 +99,11 @@ def encrypt():
     log.info(encryptedR.shape)
     halfLength = len(R)//2
     for i in range(halfLength):
-       encryptDecryptPixel(encryptedR,i,halfLength,BkeyMatrix,R)
+    #    encryptDecryptPixel(encryptedR,i,halfLength,BkeyMatrix,R)
+       encryptDecryptPixel(encryptedR,i,halfLength,RkeyMatrix,R)
        encryptDecryptPixel(encryptedG,i,halfLength,RkeyMatrix,G)
-       encryptDecryptPixel(encryptedB,i,halfLength,GkeyMatrix,B)
+       encryptDecryptPixel(encryptedB,i,halfLength,RkeyMatrix,B)
+    #    encryptDecryptPixel(encryptedB,i,halfLength,GkeyMatrix,B)
     fullImage1D=[]
     log.debug(f'encryption {R=}')
     log.debug(f'{encryptedR=}')
@@ -128,9 +129,11 @@ def decrypt():
     decryptedB=np.full(len(B),-1)
     halfLength = len(R)//2
     for i in range(halfLength):
-        encryptDecryptPixel(decryptedR,i,halfLength,BkeyMatrix,R,False)
+        #encryptDecryptPixel(decryptedR,i,halfLength,BkeyMatrix,R,False)
+        encryptDecryptPixel(decryptedR,i,halfLength,RkeyMatrix,R,False)
         encryptDecryptPixel(decryptedG,i,halfLength,RkeyMatrix,G,False)
-        encryptDecryptPixel(decryptedB,i,halfLength,GkeyMatrix,B,False)
+        encryptDecryptPixel(decryptedB,i,halfLength,RkeyMatrix,B,False)
+        #encryptDecryptPixel(decryptedB,i,halfLength,GkeyMatrix,B,False)
     fullImage1D=[]
     log.debug(f'decryption {R=}')
     log.debug(f'{decryptedR=}')
