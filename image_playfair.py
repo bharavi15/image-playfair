@@ -92,7 +92,7 @@ def findLoc(mat,x):
 def encrypt():
     inp = input("Enter image file name to encrypt= ")
     R,G,B,A,sizes=readRGB(inp,False)
-    R,G,B,A,sizes=readRGB('download.png',False)
+    #R,G,B,A,sizes=readRGB('download.png',False)
     log.info(sizes)
     encryptedR=np.full(len(R),-1)
     encryptedG=np.full(len(G),-1)
